@@ -1,6 +1,7 @@
 import streamlit as st
 from ultralytics import YOLO
 import tempfile
+import os
 
 # =========================
 # Page Settings
@@ -22,30 +23,21 @@ st.markdown("""
 
 [data-testid="stFileUploader"] {
     background-color: #111111;
-    border: 2px solid #ff8800;
-    border-radius: 15px;
     padding: 10px;
-}
-
-[data-testid="stSpinner"] {
-    color: #ff8800;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
-# Glowing Title
+# Title
 # =========================
 st.markdown("""
 <h1 style='
 text-align:center;
 color:#ff8800;
 font-size:55px;
-text-shadow:
-0 0 10px #ff8800,
-0 0 20px #ff8800,
-0 0 30px #ff8800;
+font-weight:bold;
 '>
 🚗 Tire Damage Detector
 </h1>
@@ -61,7 +53,16 @@ st.markdown(
 # =========================
 @st.cache_resource
 def load_model():
-    return YOLO("best.pt")
+
+    MODEL_PATH = "best.pt"
+
+    if not os.path.exists(MODEL_PATH):
+        st.error(
+            "best.pt not found. Upload your YOLO model to the GitHub repository."
+        )
+        st.stop()
+
+    return YOLO(MODEL_PATH)
 
 model = load_model()
 
