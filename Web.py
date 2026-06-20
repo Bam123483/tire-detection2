@@ -6,7 +6,7 @@ import tempfile
 # Load YOLO model
 @st.cache_resource
 def load_model():
-    return YOLO("runs/detect/train14/weights/best.pt")
+    return YOLO("best.pt")
 
 model = load_model()
 
